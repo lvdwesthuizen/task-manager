@@ -1,0 +1,25 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+a {
+	text-decoration: none;
+	color: #444746;
+	display: flex;
+	align-items: center;
+}
+p,
+h1,
+h2,
+h3,
+h4 {
+	margin: 0;
+}
+.app-container {
+	width: 100vw;
+	height: 100vh;
+}
+.three-dots-icon {
+	cursor: pointer;
+}

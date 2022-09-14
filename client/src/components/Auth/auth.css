@@ -1,0 +1,197 @@
+.mt10 {
+	margin-top: 10px;
+}
+.mt20 {
+	margin-top: 20px;
+}
+.container {
+	background-color: #fff;
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+}
+#login-form .inner-container {
+	width: 50%;
+	margin: auto;
+	display: flex;
+}
+.divider-container {
+	width: 20%;
+	display: flex;
+	justify-content: center;
+}
+.divider {
+	height: 100%;
+	width: 0px;
+	border-right: 1px solid #999;
+}
+.login {
+	width: 40%;
+	display: flex;
+	justify-content: flex-end;
+}
+/* .form {
+	width: 250px;
+} */
+.heading {
+	color: #000;
+	font-family: 'Oswald', sans-serif;
+	font-size: 40px;
+	line-height: 1.1;
+	margin: 0;
+}
+.register {
+	width: 40%;
+}
+.input-label-container {
+	padding-top: 25px;
+}
+.input-label {
+	color: #000;
+	font-family: RobotoMono, monospace;
+	font-size: 11px;
+	letter-spacing: 0px;
+	line-height: 11px;
+}
+.input-container {
+	margin-top: 7px;
+}
+.button {
+	font-family: RobotoMono, monospace;
+	font-size: 11px;
+	cursor: pointer;
+	border-radius: 20px;
+	border-style: solid;
+	border-width: 2px;
+	margin-right: 20px;
+	padding-left: 20px;
+	padding-right: 20px;
+	height: 40px;
+}
+.button-contained {
+	border-color: #ff4848;
+	background-color: #ff4848;
+	color: #fff;
+}
+.button-contained:hover {
+	border-color: #ccc;
+	background-color: #ccc;
+	color: #151515;
+}
+.button-outlined {
+	border: 2px solid #ff4848;
+	background-color: #fff;
+	color: #000;
+	display: inline-flex;
+	align-items: center;
+}
+.button-outlined:hover {
+	border-color: #ff4848;
+	background-color: #ff4848;
+	color: #fff;
+}
+.flex {
+	display: flex;
+	align-items: center;
+}
+.login-button-container {
+	display: flex;
+	align-items: center;
+}
+.forgot-password-link {
+	text-decoration: none;
+	color: #999;
+	font-family: RobotoMono, monospace;
+	font-size: 11px;
+	margin-left: 20px;
+}
+.password-container {
+	justify-content: space-between;
+}
+.password-container svg {
+	font-size: 18px;
+	margin-left: 5px;
+	margin-right: 5px;
+	color: #ff4848;
+}
+.show-password {
+	cursor: pointer;
+}
+.show-password span {
+	color: #ff4848;
+}
+.remember-me {
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+.remember-me svg {
+	width: 20px;
+	height: 20px;
+	color: #000;
+}
+
+/* registration page styles */
+#registration-form {
+	height: calc(100vh - 142px);
+}
+#registration-form .inner-container {
+	width: 70%;
+	margin: auto;
+	display: flex;
+}
+#registration-form form {
+	width: unset;
+	margin: 10px 0;
+}
+.register-heading {
+	font-family: 'Oswald', sans-serif;
+	font-size: 82px;
+	color: #fff;
+	background-color: #000;
+	padding: 10px 0;
+}
+.register-heading div {
+	width: 65%;
+	margin: auto;
+}
+.heading-container {
+	display: flex;
+	align-items: baseline;
+}
+.required {
+	color: #aaa;
+	font-family: RobotoMono, monospace;
+	font-size: 11px;
+	letter-spacing: 0px;
+	line-height: 11px;
+	margin-left: 20px;
+}
+.asterisk {
+	color: #ff4848;
+}
+.your-details {
+	color: #ff4848;
+	text-transform: uppercase;
+	margin-bottom: 5px;
+}
+.sub-heading {
+	font-family: 'Oswald', sans-serif;
+	font-size: 18px;
+	letter-spacing: 0px;
+	line-height: 26px;
+	margin-bottom: 5px;
+}
+.already-have-account {
+	margin-left: 100px;
+}
+.error-msg {
+	color: #ff4848;
+	font-family: Helvetica;
+	font-size: 13px;
+	letter-spacing: 0px;
+	line-height: 20px;
+	margin-top: 5px;
+}
+.missing-field-data {
+	border: 1px solid #ff4848;
+}
