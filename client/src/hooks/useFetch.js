@@ -1,11 +1,10 @@
-import { useState, useContext } from 'react';
+import { useContext } from 'react';
 import AuthContext from 'AuthContext';
 
 const useFetch = () => {
-	const [errorMessage, setErrorMessage] = useState(null);
 	const auth = useContext(AuthContext);
 
-	const sendHttpRequest = async (url, method, postData, action) => {
+	const sendHttpRequest = async (url, method, action, postData) => {
 		await fetch(`/api/${url}`, {
 			method: method,
 			headers: {
@@ -15,13 +14,16 @@ const useFetch = () => {
 			body: postData ? JSON.stringify(postData) : null,
 		})
 			.then(response => {
-				response.json();
-				action();
+				if (response.status === 401) {
+					auth.logout();
+				}
+				const data = response.json();
+				action(data);
 			})
-			.catch(error => setErrorMessage(error));
+			.catch(error => console.log(error));
 	};
 
-	return [errorMessage, sendHttpRequest];
+	return sendHttpRequest;
 };
 
 export default useFetch;

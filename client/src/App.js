@@ -30,7 +30,7 @@ const theme = createTheme({
 		MuiMenuItem: {
 			styleOverrides: {
 				root: {
-					fontSize: '13px',
+					fontSize: '14px',
 				},
 			},
 		},
@@ -55,6 +55,11 @@ const theme = createTheme({
 					textTransform: 'unset',
 					fontWeight: 400,
 				},
+			},
+		},
+		MuiButtonBase: {
+			defaultProps: {
+				disableRipple: true,
 			},
 		},
 		MuiTypography: {
@@ -96,6 +101,7 @@ export default function App() {
 
 	const login = accessToken => {
 		setToken(accessToken);
+		refreshToken();
 	};
 
 	const logout = () => {
@@ -132,7 +138,7 @@ export default function App() {
 					setToken(data.accessToken);
 					setTimeout(() => {
 						refreshToken();
-					}, 900 * 1000 - 500);
+					}, 5 * 60 * 1000 - 500);
 				} else {
 					setToken(null);
 				}
@@ -160,7 +166,7 @@ export default function App() {
 								<Route path='today' element={<Today />} />
 								<Route path='upcoming' element={<Upcoming />} />
 								<Route path='filters-labels' element={<FiltersLabels />} />
-								<Route path='project/:name' element={<Project />} />
+								<Route path='project/:id' element={<Project />} />
 								<Route
 									path='*'
 									element={

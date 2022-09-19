@@ -1,8 +1,9 @@
 /* eslint-disable react/prop-types */
-import React, { useReducer } from 'react';
+import React, { useReducer, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -14,8 +15,6 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import { BsFillRecordFill } from 'react-icons/bs';
-import { Typography } from '@mui/material';
-import { useEffect } from 'react';
 
 const colours = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'black'];
 
@@ -41,10 +40,27 @@ function reducer(state, action) {
 	}
 }
 
-export default function AddProjectForm(props) {
+export default function AddEditProject(props) {
 	const [state, dispatch] = useReducer(reducer, initialState);
 	useEffect(() => {
 		dispatch({ type: 'reset' });
+		if (props.project) {
+			dispatch({
+				type: 'updateField',
+				field: 'name',
+				value: props.project.name,
+			});
+			dispatch({
+				type: 'updateField',
+				field: 'colour',
+				value: props.project.colour,
+			});
+			dispatch({
+				type: 'updateField',
+				field: 'view',
+				value: props.project.view,
+			});
+		}
 	}, [props.open, props.project]);
 
 	return (
@@ -62,7 +78,7 @@ export default function AddProjectForm(props) {
 					<label className='input-label'>Name</label>
 					<TextField
 						size='small'
-						value={props.project.name || state.name}
+						value={state.name}
 						onChange={e =>
 							dispatch({
 								type: 'updateField',
@@ -79,7 +95,7 @@ export default function AddProjectForm(props) {
 						size='small'
 						fullWidth
 						displayEmpty
-						value={props.project.colour || state.colour}
+						value={state.colour}
 						onChange={e =>
 							dispatch({
 								type: 'updateField',
@@ -109,7 +125,7 @@ export default function AddProjectForm(props) {
 				<FormControl sx={{ mt: '20px' }}>
 					<label className='input-label'>View</label>
 					<RadioGroup
-						value={props.project.view || state.view}
+						value={state.view}
 						sx={{ flexDirection: 'row' }}
 						onChange={e =>
 							dispatch({
@@ -136,10 +152,10 @@ export default function AddProjectForm(props) {
 				<Button
 					variant='contained'
 					disableElevation
-					disabled={!state.name}
-					onClick={() => props.handleAddProject(state)}
+					disabled={!state.name && !props.project.name}
+					onClick={() => props.handleSubmit(state, props.project._id)}
 				>
-					Add
+					Save
 				</Button>
 			</DialogActions>
 		</Dialog>

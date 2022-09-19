@@ -4,7 +4,8 @@ import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import { Typography } from '@mui/material';
+import Typography from '@mui/material/Typography';
+import { BsInfoCircle } from 'react-icons/bs';
 
 export default function ConfirmDelete(props) {
 	return (
@@ -17,8 +18,16 @@ export default function ConfirmDelete(props) {
 			}}
 		>
 			<DialogContent>
-				<Typography variant='body1'>
-					Are you sure you want to delete <b>{props.project.name}</b>?
+				<Typography
+					variant='body1'
+					sx={{ display: 'flex', alignItems: 'center' }}
+				>
+					<BsInfoCircle size={18} style={{ marginRight: '8px' }} />
+					Are you sure you want to delete{' '}
+					<span style={{ fontWeight: 500, marginLeft: '4px' }}>
+						{props.item.name}
+					</span>
+					?
 				</Typography>
 			</DialogContent>
 			<DialogActions sx={{ padding: '0 16px 12px' }}>
@@ -33,7 +42,7 @@ export default function ConfirmDelete(props) {
 				<Button
 					variant='contained'
 					disableElevation
-					onClick={() => props.handleDelete(props.project._id)}
+					onClick={() => props.handleDelete(props.item._id)}
 				>
 					Delete
 				</Button>

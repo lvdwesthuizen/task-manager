@@ -1,18 +1,21 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import AppBar from './AppBar';
 import { Main } from './Main';
 import Drawer from './Drawer';
-import AuthContext from 'AuthContext';
+import useFetch from 'hooks/useFetch';
 
 export default function MainLayout() {
-	const auth = useContext(AuthContext);
 	const [openDrawer, setOpenDrawer] = useState(false);
 	const [openNestedList, setOpenNestedList] = useState(false);
 	const [projects, setProjects] = useState([]);
 	const [openDialog, setOpenDialog] = useState(false);
 	const [formType, setFormType] = useState('Add');
+
+	const sendHttpRequest = useFetch();
+
+	let navigate = useNavigate();
 
 	const toggleNestedList = () => {
 		setOpenNestedList(prevState => !prevState);
@@ -32,41 +35,32 @@ export default function MainLayout() {
 	};
 
 	const fetchProjects = () => {
-		fetch('/api/project/fetch-all', {
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${auth.token}`,
-			},
-			mode: 'cors',
-			credentials: 'include',
-			cache: 'no-cache',
-			referrerPolicy: 'no-referrer',
-		})
-			.then(res => res.json())
-			.then(data => setProjects(data))
-			.catch(error => console.log(error));
+		sendHttpRequest('project/fetch-all', 'GET', projectsRetrieved);
 	};
 
-	const addProject = state => {
-		fetch('/api/project/add', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${auth.token}`,
-			},
-			mode: 'cors',
-			credentials: 'include',
-			cache: 'no-cache',
-			referrerPolicy: 'no-referrer',
-			body: JSON.stringify({
-				name: state.name.toLowerCase(),
-				colour: state.colour,
-				view: state.view,
-			}),
-		}).then(() => {
+	const projectsRetrieved = response => {
+		response.then(data => {
+			setProjects(data);
+		});
+	};
+
+	const projectSubmitted = response => {
+		response.then(data => {
 			fetchProjects();
+			navigate(`/app/project/${data.project._id}`, {
+				replace: true,
+				state: { project: data.project },
+			});
 			handleCloseDialog();
+		});
+	};
+
+	const submitProject = (state, id = null) => {
+		sendHttpRequest('project/add', 'POST', projectSubmitted, {
+			name: state.name.toLowerCase(),
+			colour: state.colour,
+			view: state.view,
+			id: id,
 		});
 	};
 
@@ -86,7 +80,7 @@ export default function MainLayout() {
 				handleCloseDialog={handleCloseDialog}
 				formType={formType}
 				toggleDrawer={toggleDrawer}
-				addProject={addProject}
+				submitProject={submitProject}
 				projects={projects}
 				fetchProjects={fetchProjects}
 			/>

@@ -5,13 +5,13 @@ export const Main = styled('main', {
 })(({ theme, open }) => ({
 	flexGrow: 1,
 	padding: theme.spacing(3),
-	height: 'calc(100vh - 64px)',
-	marginTop: '64px',
+	height: 'calc(100vh - 54px)',
+	marginTop: '54px',
 	transition: theme.transitions.create('margin', {
 		easing: theme.transitions.easing.sharp,
 		duration: theme.transitions.duration.leavingScreen,
 	}),
-	marginLeft: '-240px',
+	marginLeft: '-280px',
 	...(open && {
 		transition: theme.transitions.create('margin', {
 			easing: theme.transitions.easing.easeOut,

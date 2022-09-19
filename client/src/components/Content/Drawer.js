@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useParams, useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
@@ -28,7 +28,7 @@ import {
 	BsArchive,
 	BsTrash,
 } from 'react-icons/bs';
-import AddProjectForm from './AddProjectForm';
+import AddEditProject from './AddEditProject';
 import ConfirmDelete from './ConfirmDelete';
 import useFetch from 'hooks/useFetch';
 
@@ -37,7 +37,11 @@ export default function Drawer(props) {
 	const isMenuOpen = Boolean(anchorEl);
 	const [project, setProject] = useState({});
 	const [confirmDelete, setConfirmDelete] = useState(false);
-	const [errorMessage, sendHttpRequest] = useFetch(null);
+	const sendHttpRequest = useFetch();
+
+	let { name: activeProject } = useParams();
+
+	let navigate = useNavigate();
 
 	const handleMenuOpen = (event, item) => {
 		setAnchorEl(event.currentTarget);
@@ -49,12 +53,17 @@ export default function Drawer(props) {
 	};
 
 	const handleDelete = () => {
-		sendHttpRequest('project/delete', 'POST', { id: project._id }, onDelete);
+		sendHttpRequest('project/delete', 'POST', onDelete, { id: project._id });
 	};
 
-	const onDelete = () => {
-		setConfirmDelete(false);
-		props.fetchProjects();
+	const onDelete = data => {
+		data.then(result => {
+			setConfirmDelete(false);
+			props.fetchProjects();
+			if (result.project.name === activeProject) {
+				navigate('/app/today', { replace: true });
+			}
+		});
 	};
 
 	const handleCloseConfirmDelete = () => {
@@ -76,17 +85,22 @@ export default function Drawer(props) {
 			onClose={handleMenuClose}
 			elevation={1}
 		>
-			<MenuItem onClick={() => props.handleOpenDialog('Edit')}>
+			<MenuItem
+				onClick={() => {
+					handleMenuClose();
+					props.handleOpenDialog('Edit');
+				}}
+			>
 				<BsPencil size={14} />
-				<Typography sx={{ ml: '10px' }}>Edit project</Typography>
+				<Typography sx={{ ml: '12px' }}>Edit project</Typography>
 			</MenuItem>
 			<MenuItem onClick={handleMenuClose}>
 				<BsHeart size={14} />
-				<Typography sx={{ ml: '10px' }}>Add to favourites</Typography>
+				<Typography sx={{ ml: '12px' }}>Add to favourites</Typography>
 			</MenuItem>
 			<MenuItem onClick={handleMenuClose}>
 				<BsArchive size={14} />
-				<Typography sx={{ ml: '10px' }}>Archive project</Typography>
+				<Typography sx={{ ml: '12px' }}>Archive project</Typography>
 			</MenuItem>
 			<MenuItem
 				onClick={() => {
@@ -95,7 +109,7 @@ export default function Drawer(props) {
 				}}
 			>
 				<BsTrash size={14} />
-				<Typography sx={{ ml: '10px' }}>Delete project</Typography>
+				<Typography sx={{ ml: '12px' }}>Delete project</Typography>
 			</MenuItem>
 		</Menu>
 	);
@@ -112,6 +126,7 @@ export default function Drawer(props) {
 						top: '54px',
 						backgroundColor: '#FAFAFA',
 						borderRight: 'none',
+						pt: '16px',
 					},
 				}}
 				variant='persistent'
@@ -205,19 +220,22 @@ export default function Drawer(props) {
 										disableRipple
 										sx={{
 											height: '37px',
+											borderRadius: '4px',
 											'&:hover': {
 												borderRadius: '4px',
 											},
+											backgroundColor:
+												activeProject === item.name ? '#EEEEEE' : '',
 										}}
 									>
 										<NavLink
-											to={`/app/project/${item.name.replace(' ', '-')}`}
-											style={({ isActive }) => {
+											to={`/app/project/${item._id}`}
+											state={{ project: item }}
+											style={() => {
 												return {
 													display: 'flex',
 													alignItems: 'center',
 													justifyContent: 'space-between',
-													// backgroundColor: isActive ? '#EEEEEE' : '',
 													borderRadius: '4px',
 													width: '100%',
 												};
@@ -254,10 +272,10 @@ export default function Drawer(props) {
 					</Collapse>
 				</List>
 			</MuiDrawer>
-			<AddProjectForm
+			<AddEditProject
 				open={props.openDialog}
 				handleClose={props.handleCloseDialog}
-				handleAddProject={props.addProject}
+				handleSubmit={props.submitProject}
 				type={props.formType}
 				project={project}
 			/>
@@ -265,7 +283,7 @@ export default function Drawer(props) {
 				open={confirmDelete}
 				handleClose={handleCloseConfirmDelete}
 				handleDelete={handleDelete}
-				project={project}
+				item={project}
 			/>
 		</>
 	);

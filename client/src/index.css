@@ -23,3 +23,16 @@ h4 {
 .three-dots-icon {
 	cursor: pointer;
 }
+.flex-row {
+	display: flex;
+	align-items: center;
+}
+.form-field-no-border {
+	border: none;
+	outline: none;
+	padding-bottom: 8px;
+	border: none;
+	resize: none;
+	font-family: 'Roboto';
+	font-size: 14px;
+}
